@@ -46,12 +46,12 @@ very few APIs older than I am, and though it's very widespread -- ubiquitous,
 really -- it's not in my opinion a very good API (though NCURSES is a very
 good implementation).
 
- * Limited Unicode support
- * PseudoColor and weird colorpair system baked into the API
- * Control via global variables
- * Limited threading support
- * Identifier naming all over the place
- * Basic functionality available only as extensions
+  * Limited Unicode support
+  * PseudoColor and weird colorpair system baked into the API
+  * Control via global variables
+  * Limited threading support
+  * Identifier naming all over the place
+  * Basic functionality available only as extensions
 
 ### Why not some other library?
 
@@ -66,43 +66,43 @@ I deemed them all unacceptable for one reason or another.
 ### Design goals
 
 * Written in C
-** C is the base language of UNIX and its system calls
-** We can wrap it with just about any other language
-** Very real performance results
+  * C is the base language of UNIX and its system calls
+  * We can wrap it with just about any other language
+  * Very real performance results
 
 * Two modes:
-** "Direct mode" works with standard I/Ogood for batch or line-driven programs
-** "Rendered mode" renders fullscreen frames, then blits them
+  * "Direct mode" works with standard I/Ogood for batch or line-driven programs
+  * "Rendered mode" renders fullscreen frames, then blits them
 
 * Multithreading support. This means:
-** Specifying which functions can be called in parallel
-** Designing to maximize the area of safe parallel intersections
+  * Specifying which functions can be called in parallel
+  * Designing to maximize the area of safe parallel intersections
 
 * General surface support
-** Surfaces can be any size, and are free to be partially/totally offscreen
-** Z-axis (total ordering) within each pile
-** Binding (directed acyclic forest) within each pile with resize cascades
-** Three independent channels -- glyph, foreground color, background color
+  * Surfaces can be any size, and are free to be partially/totally offscreen
+  * Z-axis (total ordering) within each pile
+  * Binding (directed acyclic forest) within each pile with resize cascades
+  * Three independent channels -- glyph, foreground color, background color
 
 * TrueColor, color blending, and default colors 
-** Default colors allow transparency to the desktop
-** More generally, default colors allow a degree of user configuration
-** Palette-indexed PseudoColor to minimize bandwidth
+  * Default colors allow transparency to the desktop
+  * More generally, default colors allow a degree of user configuration
+  * Palette-indexed PseudoColor to minimize bandwidth
 
 * Multimedia support
-** Sits atop FFmpeg or OpenImageIO
-** State-of-the-art quad- and sex-blitters
+  * Sits atop FFmpeg or OpenImageIO
+  * State-of-the-art quad- and sex-blitters
 
 * Widgets
-** Progress bar, selector, multiselector, reels, input box, menus, plots
-** libreadline in direct mode
-** Several types of boxes, polyfill, rotations
+  * Progress bar, selector, multiselector, reels, input box, menus, plots
+  * libreadline in direct mode
+  * Several types of boxes, polyfill, rotations
 
 * Perf domination
-** O(1) translation, z-axis move, reparenting, destruction
-** Optimal rendering and rasterization based off painter's algorithm / damage maps
-** (Coming soon) automatic palette generation
-** Extensive profiling, performance tracking as part of CI, `notcurses-demo` provides 25 benchmarks
+  * O(1) translation, z-axis move, reparenting, destruction
+  * Optimal rendering and rasterization based off painter's algorithm / damage maps
+  * (Coming soon) automatic palette generation
+  * Extensive profiling, performance tracking as part of CI, `notcurses-demo` provides 25 benchmarks
 
 ## A Tour of Notcurses
 
@@ -125,12 +125,12 @@ where we need be rapidly updating the full screen, we use rendered mode.
 ### Rendered mode
 
 *Piles* made up of *planes* are *rendered* into *frames*.
-** Piles are independent -- multiple threads can mutate multiple piles
-** The painter's algorithm is used for rendering.
+  * Piles are independent -- multiple threads can mutate multiple piles
+  * The painter's algorithm is used for rendering.
 
 A frame is then *rasterized* to the terminal, bringing the visual area
 into synchronization with the rendered frame.
-** Damage maps are used to optimize rasterization.
+  * Damage maps are used to optimize rasterization.
 
 Mixing standard I/O with rendered mode will lead to madness, and must
 be avoided.
@@ -154,12 +154,12 @@ One or more piles at a time.
 
 * Visual area (geometry can change at any time)
 * Composed of one or more *piles*
-** User don't work with piles explicitly
+  * User don't work with piles explicitly
 * Each is composes of one or more *planes*
-** If a pile loses all its planes, it is destroyed
+  * If a pile loses all its planes, it is destroyed
 * Each pile has a z-axis, a total ordering of its plane
 * Each pile has a binding forest
-** Subtree-wide moves, reparentings, destroys
+  * Subtree-wide moves, reparentings, destroys
 * The pile cannot be mutated while it is being rendered
 * Only one thread may reorder planes within a pile at a time
 * Multiple threads may mutate distinct piles
@@ -194,8 +194,8 @@ A cell is a 16-byte structure, with possible spillover into the egcpool.
 ```
 
 * EGCs of 4 bytes or fewer of UTF-8 are encoded directly into gcluster
-** All currently-defined Unicode characters are encoded in 4 bytes
-** Larger EGC are stored in the EGCPool, with the offset stashed into
+  * All currently-defined Unicode characters are encoded in 4 bytes
+  * Larger EGC are stored in the EGCPool, with the offset stashed into
     the gcluster's LSBs. This is indicated with a first byte of 1.
 * The backstop is always 0, so that gcluster can be used as a C string.
 * The width is the number of columns occupied by the EGC.
