@@ -227,15 +227,15 @@ pile. A new pile is created by reparenting a plane to `NULL`.
 
 Several families of character/string/formatted output:
 
-`ncplane_putc()`: Write the provided `nccell` (including style/channels)
-`ncplane_putchar()`: Write a 7-bit ASCII `char`
-`ncplane_putwc()`: Write a single wide character as an EGC `wchar_t`
-`ncplane_putegc()`: Write a single UTF-8 EGC `const char*`
-`ncplane_putwegc()`: Write a single wide character EGC `const wchar_t*`
-`ncplane_putstr()`: Write a UTF-8 string `const char*`
-`ncplane_putwstr()`: Write a wide string `const wchar_t*`
-`ncplane_printf()`: Write formatted output `const char*, ...`
-`ncplane_vprintf()`: Write formatted output `const char*, va_list`
+* `ncplane_putc()`: Write the provided `nccell` (including style/channels)
+* `ncplane_putchar()`: Write a 7-bit ASCII `char`
+* `ncplane_putwc()`: Write a single wide character as an EGC `wchar_t`
+* `ncplane_putegc()`: Write a single UTF-8 EGC `const char*`
+* `ncplane_putwegc()`: Write a single wide character EGC `const wchar_t*`
+* `ncplane_putstr()`: Write a UTF-8 string `const char*`
+* `ncplane_putwstr()`: Write a wide string `const wchar_t*`
+* `ncplane_printf()`: Write formatted output `const char*, ...`
+* `ncplane_vprintf()`: Write formatted output `const char*, va_list`
 
 Each has `_yx()`, `_aligned()`, and `_stained()` variants.
 
